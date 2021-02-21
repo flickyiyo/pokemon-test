@@ -5,7 +5,10 @@ import (
 )
 
 var (
-	PokemonNotFound = func(pokemon string) error {
-		return errors.New("Pokemon not found" + pokemon)
+	PokemonNotFound = func(pokemonName string, pokemonID int) error {
+		return errors.New("Pokemon not found.\n" +
+			"Pokemon Name: " + pokemonName + "\n Pokemon ID: " + string(pokemonID))
 	}
+	NotEnoughPokemons       = errors.New("Not enough Pokemons to perform request")
+	PokemonQuantityExceeded = errors.New("List of pokemons bigger than expected")
 )

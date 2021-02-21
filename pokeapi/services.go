@@ -6,5 +6,8 @@ import (
 
 type MatchService interface {
 	MatchPokemons([]models.Pokemon) (*models.Pokemon, error)
-	FindAbilities([]models.Pokemon) (*models.AbilitiesResponse, error)
+}
+
+type CommonMovesService interface {
+	FindCommonMoves(*models.CommonMovesRequest) (*models.MovesResponse, error)
 }

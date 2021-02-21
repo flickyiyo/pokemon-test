@@ -1,18 +1,23 @@
 package models
 
 type Pokemon struct {
-	ID   int16       `json:"id"`
-	Name string      `json:"name"`
-	Type PokemonType `json:"types"`
+	ID    int         `json:"id"`
+	Name  string      `json:"name"`
+	Types PokemonType `json:"types"`
+	Moves []Move      `json:"moves"`
 }
 
-type PokemonType struct {
-	ID   int         `json:"id"`
-	Slot int         `json:"slot"`
-	Type typeDetails `json:"type"`
+type PokemonRequest struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
 
-type typeDetails struct {
+type PokemonResponse struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+type PokemonMove struct {
 	Name string `json:"name"`
 	URL  string `json:"url"`
 }
