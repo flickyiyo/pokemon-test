@@ -6,5 +6,6 @@ COPY . /go/src/github.com/flickyiyo/pokemon-api
 WORKDIR /go/src/github.com/flickyiyo/pokemon-api
 
 RUN go get
+RUN go build
 
 
