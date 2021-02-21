@@ -13,6 +13,10 @@ func NewTypeService(typeRepository *pokeapi.TypeRepository) *typeService {
 	return &typeService{*typeRepository}
 }
 
-func (self *typeService) FindTypes(pokemon *models.Pokemon) (*models.Type, error) {
-	return nil, nil
+func (self *typeService) FindTypeList(pokemon *models.Pokemon) ([]models.Type, error) {
+	typeList, err := self.typeRepository.FindTypeList(pokemon)
+	if err != nil {
+		return nil, err
+	}
+	return typeList, nil
 }

@@ -1,2 +1,4 @@
 github.com/go-chi/chi v1.5.2 h1:YcLIBANL4OTaAOcTdp//sskGa0yGACQMCtbnr7YEn0Q=
 github.com/go-chi/chi v1.5.2/go.mod h1:REp24E+25iKvxgeTfHmdUoL5x15kBiDBlnIl5bCwe2k=
+github.com/robpike/filter v0.0.0-20150108201509-2984852a2183 h1:qDhD/wJDGyWrXKLIKmEKpKK/ejaZlguyeEaLZzmrtzo=
+github.com/robpike/filter v0.0.0-20150108201509-2984852a2183/go.mod h1:3dvYi47BCPInRb2ILlNnrXfl++XpwTWLbIxPyJsUvCw=
