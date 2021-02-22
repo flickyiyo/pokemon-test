@@ -20,14 +20,14 @@ func NewPokemonRepository(baseUrl string) pokeapi.PokemonRepository {
 }
 
 func (self *pokemonRepository) FindPokemon(data *models.Pokemon) (*models.Pokemon, error) {
-	url := "https://pokeapi.co/api/v2/pokemon/"
+	var criteria string
 	if &data.ID != nil {
-		url = url + fmt.Sprint(data.ID)
+		criteria = fmt.Sprint(data.ID)
 	}
 	if &data.Name != nil {
-		url = url + data.Name
+		criteria = data.Name
 	}
-	resp, err := self.Client.R().Get(url)
+	resp, err := self.Client.R().Get("/pokemon/" + criteria)
 	if resp.StatusCode() == constants.NotFound {
 		return nil, constants.PokemonNotFound(data.Name, data.ID)
 	}

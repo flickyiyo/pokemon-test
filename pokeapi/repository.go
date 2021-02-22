@@ -11,6 +11,6 @@ type MoveRepository interface {
 }
 
 type TypeRepository interface {
-	FindType(*models.Type) (*models.Type, error)
+	// FindType(*models.Type) (*models.Type, error)
 	FindTypeList(*models.Pokemon) ([]models.Type, error)
 }

@@ -1,8 +1,12 @@
 package models
 
 type Type struct {
-	ID               int            `json:"id"`
-	Name             string         `json:"name"`
+	ID              int             `json:"id"`
+	Name            string          `json:"name"`
+	DamageRelations DamageRelations `json:"damage_relations"`
+}
+
+type DamageRelations struct {
 	DoubleDamageTo   []typeOverview `json:"double_damage_to"`
 	HalfDamageTo     []typeOverview `json:"half_damage_to"`
 	DoubleDamageFrom []typeOverview `json:"double_damage_from"`
@@ -12,7 +16,6 @@ type Type struct {
 }
 
 type PokemonType struct {
-	ID   int          `json:"id"`
 	Slot int          `json:"slot"`
 	Type typeOverview `json:"type"`
 }

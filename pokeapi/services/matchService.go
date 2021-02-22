@@ -35,6 +35,7 @@ func (self *matchService) MatchPokemons(request *models.PokemonMatch) (*models.P
 	}
 
 	typesOfA, err := self.typeRepository.FindTypeList(pokemonA)
+
 	if err != nil {
 		return nil, err
 	}
@@ -44,6 +45,7 @@ func (self *matchService) MatchPokemons(request *models.PokemonMatch) (*models.P
 	}
 
 	reasons := hasAdvantage(typesOfA, typesOfB)
+
 	var reasonList []string
 	if reasons.DoesDoubleDamage {
 		reasonList = append(reasonList, constants.DoesDoubleDamage)
@@ -86,21 +88,21 @@ func hasAdvantage(typesA, typesB []models.Type) *reasonsStruct {
 	for _, t := range typesA {
 		// Check if types from A are strong against B
 
-		for _, doubleDamage := range t.DoubleDamageTo {
+		for _, doubleDamage := range t.DamageRelations.DoubleDamageTo {
 			for _, tB := range typesB {
 				if tB.Name == doubleDamage.Name {
 					reasons.DoesDoubleDamage = true
 				}
 			}
 		}
-		for _, halfDamage := range t.HalfDamageFrom {
+		for _, halfDamage := range t.DamageRelations.HalfDamageFrom {
 			for _, tB := range typesB {
 				if tB.Name == halfDamage.Name {
 					reasons.ReceivesHalfDamage = true
 				}
 			}
 		}
-		for _, noDamage := range t.NoDamageFrom {
+		for _, noDamage := range t.DamageRelations.NoDamageFrom {
 			for _, tB := range typesB {
 				if tB.Name == noDamage.Name {
 					reasons.ReceivesNoDamage = true
@@ -109,21 +111,21 @@ func hasAdvantage(typesA, typesB []models.Type) *reasonsStruct {
 		}
 
 		// Check if A is weak against B
-		for _, doubleDamage := range t.DoubleDamageFrom {
+		for _, doubleDamage := range t.DamageRelations.DoubleDamageFrom {
 			for _, tB := range typesB {
 				if tB.Name == doubleDamage.Name {
 					reasons.ReceivesDoubleDamage = true
 				}
 			}
 		}
-		for _, halfDamage := range t.HalfDamageTo {
+		for _, halfDamage := range t.DamageRelations.HalfDamageTo {
 			for _, tB := range typesB {
 				if tB.Name == halfDamage.Name {
 					reasons.DoesHalfDamage = true
 				}
 			}
 		}
-		for _, noDamage := range t.NoDamageTo {
+		for _, noDamage := range t.DamageRelations.NoDamageTo {
 			for _, tB := range typesB {
 				if tB.Name == noDamage.Name {
 					reasons.DoesNoDamage = true
