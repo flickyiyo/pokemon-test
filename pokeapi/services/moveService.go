@@ -1,6 +1,9 @@
 package services
 
 import (
+	"fmt"
+	"sort"
+
 	"github.com/flickyiyo/pokemon-api/constants"
 	"github.com/flickyiyo/pokemon-api/models"
 	"github.com/flickyiyo/pokemon-api/pokeapi"
@@ -19,10 +22,15 @@ func (self *movesService) FindCommonMoves(request *models.CommonMovesRequest) (*
 	if len(request.Pokemons) < 2 {
 		return nil, constants.NotEnoughPokemons
 	}
-
-	// movesMap := make(map[string]map[string]bool)
-	var pokemons []*models.Pokemon
-	for _, p := range request.Pokemons {
+	var lang string
+	if request.LangName == "" || &request.LangName == nil {
+		lang = "en"
+	} else {
+		lang = request.LangName
+	}
+	movesMap := make(map[string][]string)
+	pokemons := request.Pokemons
+	for _, p := range pokemons {
 		pokemon, err := self.pokemonRepository.FindPokemon(&p)
 		if err != nil {
 			return nil, err
@@ -30,8 +38,61 @@ func (self *movesService) FindCommonMoves(request *models.CommonMovesRequest) (*
 		if pokemon == nil {
 			return nil, constants.PokemonNotFound(pokemon.Name, pokemon.ID)
 		}
-		pokemons = append(pokemons, pokemon)
+		for _, move := range pokemon.Moves {
+			if movesMap[move.Move.Name] != nil {
+				movesMap[move.Move.Name] = append(movesMap[move.Move.Name], pokemon.Name)
+			} else {
+				movesMap[move.Move.Name] = []string{pokemon.Name}
+			}
+		}
 	}
 
-	return nil, nil
+	var allSharedMoves []string
+	for k, v := range movesMap {
+		if len(v) == len(pokemons) {
+			allSharedMoves = append(allSharedMoves, k)
+		}
+	}
+	sort.Strings(allSharedMoves)
+	fmt.Println("Num page ", request.NumPage)
+
+	numPage := request.NumPage
+	if request.NumPage == 0 || &request.NumPage == nil {
+		numPage = 1
+	}
+	slicedSharedMoves := allSharedMoves[numPage*10-10 : numPage*10]
+	fmt.Println(slicedSharedMoves)
+
+	var dtoSharedMoves []models.MoveDto
+	for _, sharedMove := range slicedSharedMoves {
+		foundMove, err := self.movesRepository.FindMove(&models.Move{Name: sharedMove})
+		if err != nil {
+			return nil, err
+		}
+		mv := getMoveOnLang(foundMove, lang)
+		dtoSharedMoves = append(dtoSharedMoves, *mv)
+	}
+
+	return &models.MovesResponse{
+		Page:    request.NumPage,
+		Moves:   dtoSharedMoves,
+		NumRows: 10,
+	}, nil
+}
+
+func getMoveOnLang(move *models.Move, lang string) *models.MoveDto {
+	fmt.Println("Getting into for")
+	fmt.Println(fmt.Sprint(move.Names))
+	for _, moveName := range move.Names {
+		fmt.Println(" into for")
+
+		fmt.Println(moveName.Name)
+		if moveName.Language.Name == lang {
+			return &models.MoveDto{
+				Name:     moveName.Name,
+				Language: lang,
+			}
+		}
+	}
+	return nil
 }

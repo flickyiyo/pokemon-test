@@ -15,12 +15,12 @@ func main() {
 	// 	port = os.Getenv("PORT")
 	// }
 	baseURL := "https://pokeapi.co/api/v2/"
-	// moveRepo := repositories.NewMoveRepository(baseURL)
+	moveRepo := repositories.NewMoveRepository(baseURL)
 	typeRepo := repositories.NewTypeRepository(baseURL)
 	pokeRepo := repositories.NewPokemonRepository(baseURL)
 
 	matchService := services.NewMatchService(pokeRepo, typeRepo)
-	// moveService := services.NewMovesService(pokeRepo, moveRepo)
+	moveService := services.NewMovesService(pokeRepo, moveRepo)
 	// typeService := services.NewTypeService(&typeRepo)
 
 	// matchHandler := rest.NewMatchHandler(matchService, typeService)
@@ -52,6 +52,22 @@ func main() {
 			c.String(http.StatusInternalServerError, "Invalid match response %s", err.Error())
 		}
 		c.JSON(200, response)
+	})
+
+	router.POST("/common-moves/", func(c *gin.Context) {
+		var body models.CommonMovesRequest
+		if err := c.ShouldBindJSON(&body); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		commonMoves, err := moveService.FindCommonMoves(&body)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, commonMoves)
 
 	})
 
