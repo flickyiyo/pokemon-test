@@ -34,6 +34,6 @@ func (self *moveRepository) FindMove(move *models.Move) (*models.Move, error) {
 		return nil, errors.New("Could not retrieve move, " + err.Error())
 	}
 
-	return move, nil
+	return &result, nil
 
 }

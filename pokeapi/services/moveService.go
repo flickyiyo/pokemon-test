@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"sort"
 
 	"github.com/flickyiyo/pokemon-api/constants"
@@ -54,14 +53,12 @@ func (self *movesService) FindCommonMoves(request *models.CommonMovesRequest) (*
 		}
 	}
 	sort.Strings(allSharedMoves)
-	fmt.Println("Num page ", request.NumPage)
 
 	numPage := request.NumPage
 	if request.NumPage == 0 || &request.NumPage == nil {
 		numPage = 1
 	}
 	slicedSharedMoves := allSharedMoves[numPage*10-10 : numPage*10]
-	fmt.Println(slicedSharedMoves)
 
 	var dtoSharedMoves []models.MoveDto
 	for _, sharedMove := range slicedSharedMoves {
@@ -81,12 +78,8 @@ func (self *movesService) FindCommonMoves(request *models.CommonMovesRequest) (*
 }
 
 func getMoveOnLang(move *models.Move, lang string) *models.MoveDto {
-	fmt.Println("Getting into for")
-	fmt.Println(fmt.Sprint(move.Names))
 	for _, moveName := range move.Names {
-		fmt.Println(" into for")
 
-		fmt.Println(moveName.Name)
 		if moveName.Language.Name == lang {
 			return &models.MoveDto{
 				Name:     moveName.Name,
