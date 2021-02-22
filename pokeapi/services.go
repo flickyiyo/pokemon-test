@@ -5,7 +5,7 @@ import (
 )
 
 type MatchService interface {
-	MatchPokemons([]models.Pokemon) (*models.PokemonMatchResponse, error)
+	MatchPokemons(*models.PokemonMatch) (*models.PokemonMatchResponse, error)
 }
 
 type CommonMovesService interface {
@@ -13,5 +13,5 @@ type CommonMovesService interface {
 }
 
 type TypeService interface {
-	FindTypeList(*models.PokemonType) ([]models.Type, error)
+	FindTypeList(*models.Pokemon) ([]models.Type, error)
 }

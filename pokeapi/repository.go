@@ -7,7 +7,7 @@ type PokemonRepository interface {
 }
 
 type MoveRepository interface {
-	FindMove(*models.Move) (*models.Move, error)
+	FindMove(*models.CommonMovesRequest) (*models.Move, error)
 }
 
 type TypeRepository interface {

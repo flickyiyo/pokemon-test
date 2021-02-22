@@ -11,11 +11,14 @@ type matchService struct {
 	typeRepository    pokeapi.TypeRepository
 }
 
-func NewMatchService(matchRepository *pokeapi.PokemonRepository, typeRepository *pokeapi.TypeRepository) *matchService {
-	return &matchService{*matchRepository, *typeRepository}
+func NewMatchService(matchRepository pokeapi.PokemonRepository, typeRepository pokeapi.TypeRepository) pokeapi.MatchService {
+	return &matchService{matchRepository, typeRepository}
 }
 
-func (self *matchService) MatchPokemons(pokemons []models.Pokemon) (*models.PokemonMatchResponse, error) {
+func (self *matchService) MatchPokemons(request *models.PokemonMatch) (*models.PokemonMatchResponse, error) {
+
+	pokemons := request.Pokemons
+
 	if len(pokemons) < 2 {
 		return nil, constants.NotEnoughPokemons
 	}
@@ -62,7 +65,7 @@ func (self *matchService) MatchPokemons(pokemons []models.Pokemon) (*models.Poke
 	}
 	return &models.PokemonMatchResponse{
 		Reasons: reasonList,
-		Pokemon: pokemonA,
+		Pokemon: *pokemonA,
 	}, nil
 }
 

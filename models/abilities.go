@@ -16,6 +16,7 @@ type CommonMovesRequest struct {
 	LangID   int       `json:"lang_id"`
 	LangName string    `json:"lang_name"`
 	NumRows  int       `json:"num_rows"`
+	NumPage  int       `json:"num_page"`
 	Pokemons []Pokemon `json:"pokemons"`
 }
 

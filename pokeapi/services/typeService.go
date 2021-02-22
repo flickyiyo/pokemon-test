@@ -9,7 +9,7 @@ type typeService struct {
 	typeRepository pokeapi.TypeRepository
 }
 
-func NewTypeService(typeRepository *pokeapi.TypeRepository) *typeService {
+func NewTypeService(typeRepository *pokeapi.TypeRepository) pokeapi.TypeService {
 	return &typeService{*typeRepository}
 }
 

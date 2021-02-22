@@ -11,14 +11,16 @@ type movesService struct {
 	movesRepository   pokeapi.MoveRepository
 }
 
-func NewmovesService(pokemonRepository pokeapi.PokemonRepository, movesRepository pokeapi.MoveRepository) *movesService {
+func NewMovesService(pokemonRepository pokeapi.PokemonRepository, movesRepository pokeapi.MoveRepository) pokeapi.CommonMovesService {
 	return &movesService{pokemonRepository, movesRepository}
 }
 
-func (self *movesService) FindCommonmoves(request *models.CommonmovesRequest) (*models.movesResponse, error) {
+func (self *movesService) FindCommonMoves(request *models.CommonMovesRequest) (*models.MovesResponse, error) {
 	if len(request.Pokemons) < 2 {
 		return nil, constants.NotEnoughPokemons
 	}
+
+	// movesMap := make(map[string]map[string]bool)
 	var pokemons []*models.Pokemon
 	for _, p := range request.Pokemons {
 		pokemon, err := self.pokemonRepository.FindPokemon(&p)
@@ -30,8 +32,6 @@ func (self *movesService) FindCommonmoves(request *models.CommonmovesRequest) (*
 		}
 		pokemons = append(pokemons, pokemon)
 	}
-
-	var commonmoves []models.Move
 
 	return nil, nil
 }
