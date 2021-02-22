@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pokemon-deploy
+spec:
+  selector:
+    matchLabels:
+      app: pokemon
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pokemon
+    spec:
+      containers:
+      - name: pokemon
+        image: flickyiyo/pokemon-api
+        ports:
+        - containerPort: 8080
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: pokemon-service
+spec:
+  selector:
+    app: pokemon
+  portS:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    nodePort: 31000
+  type: NodePort
